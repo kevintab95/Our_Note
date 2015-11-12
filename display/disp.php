@@ -12,6 +12,8 @@ require_once('../login/auth.php');
 		<script src="../bootstrap-3.3.5-dist/jquery.min.js"></script>
   		<script src="../bootstrap-3.3.5-dist/js/bootstrap.min.js"></script>
   		<link href="box.css" rel="stylesheet">
+
+
 	</head>
     
 	
@@ -69,7 +71,7 @@ require_once('../login/auth.php');
     }
 
 
-    $result = mysqli_query($connect, "SELECT title, notes, note_id FROM Note where user_id = '".$_SESSION['SESS_MEMBER_ID']."'");
+    $result = mysqli_query($connect, "SELECT title, notes, note_id, clr_code FROM Note where user_id = '".$_SESSION['SESS_MEMBER_ID']."'");
 
     if (!$result)  
 
@@ -86,6 +88,7 @@ require_once('../login/auth.php');
     $titles[] = $row['title'];
     $notes[] = $row['notes'];  
     $note_id[] = $row['note_id'];
+    $color_code[] = $row['clr_code'];
     }  
 
     
@@ -106,7 +109,30 @@ require_once('../login/auth.php');
 		
                 <div class="row">
                     <?php $x=0; foreach ($notes as $note): ?>
-                    <?php echo "<div class=\"col-md-4 text-center\"><div class=\"box\"><div class=\"box-content\">
+                    <?php echo "<div class=\"col-md-4 text-center\" ><div class=\"box\" style=\"background-color:";?>
+                                <?php
+                                switch ($color_code[$x]) {
+                                    case 'Red':
+                                        echo '#FF3300';
+                                        break;
+                                    case 'Blue':
+                                        echo '#66CCFF';
+                                        break;
+                                    case 'Green':
+                                        echo '#00FF66';
+                                        break;
+                                    case 'Yellow':
+                                        echo '#FFFF00';
+                                        break;
+                                    case 'Violet':
+                                        echo '#9900FF';
+                                        break;
+                                    default:
+                                        echo '#FFFFCC';
+                                        break;
+                                }
+                                ?>
+                                <?php echo "\"><div class=\"box-content\">
                                 <h1 class=\"tag-title\">";?>
                                 <?php echo $titles[$x]; ?>
                                 <?php echo "</h1><hr />"; ?>
@@ -126,7 +152,7 @@ require_once('../login/auth.php');
                         </div>
                     </div>"; ?>
 
-                    <?php $x=$x+1; endforeach; echo $note_id[2];?>
+                    <?php $x=$x+1; endforeach; ?>
                     
                 </div>           
             </div>
